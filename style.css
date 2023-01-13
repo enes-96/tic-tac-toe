@@ -1,52 +1,19 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.cell {
+  width: 75px;
+  height: 75px;
+  border: 2px solid;
+  box-shadow: 0 0 0 2px;
+  line-height: 75px;
+  font-size: 50px;
+  cursor: pointer;
 }
-body {
-  height: 100vh;
+#gameContainer {
+  font-family: "Permanent Marker", cursive;
+  text-align: center;
+}
+#cellContainer {
   display: grid;
-  place-items: center;
-  font-family: sans-serif;
-}
-.grid {
-  height: 600px;
-  width: 600px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-}
-.grid-item:nth-child(1) {
-  border-right: 2px solid black;
-  border-bottom: 2px solid black;
-}
-.grid-item:nth-child(4) {
-  border-right: 2px solid black;
-  border-bottom: 2px solid black;
-}
-.grid-item:nth-child(7) {
-  border-right: 2px solid black;
-}
-.grid-item:nth-child(3) {
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
-}
-.grid-item:nth-child(6) {
-  border-left: 2px solid black;
-  border-bottom: 2px solid black;
-}
-.grid-item:nth-child(9) {
-  border-left: 2px solid black;
-}
-.grid-item:nth-child(5) {
-  border-bottom: 2px solid black;
-}
-.grid-item:nth-child(2) {
-  border-bottom: 2px solid black;
-}
-.grid-item {
-  font-size: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  grid-template-columns: repeat(3, auto);
+  width: 225px;
+  margin: auto;
 }

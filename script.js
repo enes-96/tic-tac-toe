@@ -1,7 +1,7 @@
-const player1 = "x";
-const player2 = "o";
-let player1Begins = true;
-const winnerCombinations = [
+const cells = document.querySelectorAll(".cell");
+const statusText = document.querySelector("#statusText");
+const restartBtn = document.querySelector("#restartBtn");
+const winConditions = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -11,30 +11,68 @@ const winnerCombinations = [
   [0, 4, 8],
   [2, 4, 6],
 ];
-const userScore = [];
-const user2Score = [];
+let options = ["", "", "", "", "", "", "", "", ""];
+let currentPlayer = "X";
+let running = false;
 
-function eventHandle(e) {
-  const cell = e.target;
-  if (player1Begins === true) {
-    cell.innerText = "x";
-    userScore.push(cell.id);
-    console.log(userScore);
-    // eslint-disable-next-line no-return-assign
-    return (player1Begins = false);
+initializeGame();
+
+function initializeGame() {
+  cells.forEach((cell) => cell.addEventListener("click", cellClicked));
+  restartBtn.addEventListener("click", restartGame);
+  statusText.textContent = `${currentPlayer}'s turn`;
+  running = true;
+}
+function cellClicked() {
+  const cellIndex = this.getAttribute("cellIndex");
+
+  if (options[cellIndex] != "" || !running) {
+    return;
   }
-  if (player1Begins === false) {
-    cell.innerText = "o";
-    user2Score.push(cell.id);
-    console.log(user2Score);
-    return (player1Begins = true);
+
+  updateCell(this, cellIndex);
+  checkWinner();
+}
+function updateCell(cell, index) {
+  options[index] = currentPlayer;
+  cell.textContent = currentPlayer;
+}
+function changePlayer() {
+  currentPlayer = currentPlayer == "X" ? "O" : "X";
+  statusText.textContent = `${currentPlayer}'s turn`;
+}
+function checkWinner() {
+  let roundWon = false;
+
+  for (let i = 0; i < winConditions.length; i++) {
+    const condition = winConditions[i];
+    const cellA = options[condition[0]];
+    const cellB = options[condition[1]];
+    const cellC = options[condition[2]];
+
+    if (cellA == "" || cellB == "" || cellC == "") {
+      continue;
+    }
+    if (cellA == cellB && cellB == cellC) {
+      roundWon = true;
+      break;
+    }
+  }
+
+  if (roundWon) {
+    statusText.textContent = `${currentPlayer} wins!`;
+    running = false;
+  } else if (!options.includes("")) {
+    statusText.textContent = `Draw!`;
+    running = false;
+  } else {
+    changePlayer();
   }
 }
-
-function startGame() {
-  const boardCells = document.querySelectorAll(".grid-item");
-  boardCells.forEach((cell) => {
-    cell.addEventListener("click", eventHandle, { once: true });
-  });
+function restartGame() {
+  currentPlayer = "X";
+  options = ["", "", "", "", "", "", "", "", ""];
+  statusText.textContent = `${currentPlayer}'s turn`;
+  cells.forEach((cell) => (cell.textContent = ""));
+  running = true;
 }
-startGame();
